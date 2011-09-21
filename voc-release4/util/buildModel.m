@@ -1,32 +1,37 @@
 function buildModel(outDir, detAllName)
 
 if exist(detAllName, 'file')
-    load(detAllName);
-    if ~exist('clustMembsCell2','var')
+    load(detAllName, 'clusterMembersCellFinal', 'detIms', 'detBoxes', 'detRGBHist');
+    if ~exist('clusterMembersCellFinal','var')
         return
     end
     
-    model = cell(length(clustMembsCell2),3);
-    for i = 1:length(clustMembsCell2)
+    % build model for each cluster
+    nClusters = length(clusterMembersCellFinal);
+    models = cell(nClusters,1);
+    for i = 1:nClusters
+        % find the median size of all the patches in the cluster
+        iMembers = length(clusterMembersCellFinal{i});
         size = [];
-        for j = 1:length(clustMembsCell2{i})
-            k = clustMembsCell2{i}(j);
-            size = [size; detBoxes(k,3:4) - detBoxes(k,1:2)];
+        for j = 1:iMembers
+            k = clusterMembersCellFinal{i}(j);
+            size = [size; detBoxes(k,3:4)];
         end
         msize = ceil(median(size));
         sumIm = 0;
         sumHist = 0;
-        for j = 1:length(clustMembsCell2{i})
-            k = clustMembsCell2{i}(j);
+        for j = 1:iMembers
+            k = clusterMembersCellFinal{i}(j);
             detIm = detIms{k};
             detIm = im2double(imresize(detIm, msize));
             sumIm = sumIm + detIm;
             detHist = detRGBHist(k,:);
             sumHist = sumHist + detHist;
         end
-        model(i,1) = {detIms{clustMembsCell2{i}(1)}};
-        model(i,2) = {sumIm/length(clustMembsCell2{i})};
-        model(i,3) = {sumHist/length(clustMembsCell2{i})};
+        model.repIm = detIms{clusterMembersCellFinal{i}(1)};
+        model.meanIm = sumIm/iMembers;
+        model.hist = sumHist/iMembers;
+        models(i) = {model};
         
     end
     save(detAllName,'model','-append');
@@ -34,12 +39,14 @@ if exist(detAllName, 'file')
     plot = true;
     if plot
         modelName = fullfile(outDir, 'all_model.jpg');
-        nClusters = length(clustMembsCell2);
+        nClusters=min(5,nClusters); % only show top 5
         for i = 1:nClusters
-            subplot(nClusters,2,(i-1)*2+1);
-            imshow(model{i,1},[]);
-            subplot(nClusters,2,(i-1)*2+2);
-            bar(model{i,3});
+            subplot(nClusters,3,(i-1)*3+1);
+            imshow(models{i}.repIm,[]);
+            subplot(nClusters,3,(i-1)*3+2);
+            imshow(models{i}.meanIm,[]);
+            subplot(nClusters,3,(i-1)*3+3);
+            bar(models{i}.hist);
         end
         print('-dpng', modelName);
         close

@@ -3,11 +3,11 @@ function demo()
 load('VOC2007/car_final');
 test('000034.jpg', model);
 
-load('INRIA/inriaperson_final');
-test('000061.jpg', model);
+% load('INRIA/inriaperson_final');
+% test('000061.jpg', model);
 
-load('VOC2007/bicycle_final');
-test('000084.jpg', model);
+% load('VOC2007/bicycle_final');
+% test('000084.jpg', model);
 
 function test(name, model)
 cls = model.class;

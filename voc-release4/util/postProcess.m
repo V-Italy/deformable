@@ -17,10 +17,11 @@ if nFrames == 0
     exit(0);
 end
 
-% Read the output directory, which contains the detection results
-if ~isdir(outDir)
-    proc_video(videoDir, outDir, category, step);
+% Load the model of the given category
+if ~exist(category)
+    error([category, ' does not exist!']);
 end
+load(category);
 
 % check parameters
 if nargin == 3
@@ -36,20 +37,19 @@ else
     % with full parameters
 end
 
-% Load the model of the given category
-if ~exist(category)
-    error([category, ' does not exist!']);
+% Step 0: detect the object for the individual frame
+if ~isdir(outDir)
+    detectObj(videoDir, outDir, category, step, startFrame, endFrame);
 end
-load(category);
-
 
 detAllName = fullfile(outDir, 'detAll.mat');
 
 % step 1: use mean shift to find the cluster
-% findCluster(videoDir, outDir, model, detAllName, step, startFrame, endFrame)
+findCluster(videoDir, outDir, model, detAllName, step, startFrame, endFrame)
 
-% step 2: prune the background cluster
-% pruneCluster(outDir,detAllName);
+% step 2: perform the spatial non maximum surpression to prune the
+% background cluster
+snms(outDir, detAllName);
 
 % step 3: build model for each remaining cluster
 buildModel(outDir,detAllName);
