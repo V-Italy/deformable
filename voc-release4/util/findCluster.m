@@ -23,7 +23,7 @@ if ~exist(detAllName,'file')
             disp([detName, ' does not exist! Break loop...']);
             break;
         end
-        load(detName);
+        load(detName, 'dets', 'boxes');
         
         % read the bounding box
         if ~isempty(boxes)

@@ -1,4 +1,4 @@
-function [dets, boxes, info, pyraInfo, SCORE] = gdetect(pyra, model, thresh, bbox, overlap)
+function [dets, boxes, info, SCORE] = gdetect(pyra, model, thresh, bbox, overlap)
 
 % Detect objects in a feature pyramid using a model and a score threshold.
 % Higher threshold leads to fewer detections.
@@ -86,10 +86,6 @@ S = S(ord);
 % compute detection bounding boxes and parse information
 [dets, boxes, info] = getdetections(model, pyra.padx, pyra.pady, ...
                                     pyra.scales, X, Y, L, S);
-pyraInfo.padx = pyra.padx;
-pyraInfo.pady = pyra.pady;
-pyraInfo.nscales = length(pyra.scales);
-pyraInfo.imsize = pyra.imsize;
 
 % sanity check overlap requirement
 if latent && ~isempty(dets)

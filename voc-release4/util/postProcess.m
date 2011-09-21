@@ -38,10 +38,10 @@ else
 end
 
 % Step 0: detect the object for the individual frame
-if ~isdir(outDir)
+if isdir(outDir)
     detectObj(videoDir, outDir, category, step, startFrame, endFrame);
 end
-
+return
 detAllName = fullfile(outDir, 'detAll.mat');
 
 % step 1: use mean shift to find the cluster

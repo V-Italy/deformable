@@ -52,9 +52,10 @@ for k = startFrame : step : endFrame
 	% detect objects
 	tic
 	load(category);
-	[dets, boxes, info, score] = imgdetect(im, model, -1);
+	[dets, boxes, info, pyra, score] = imgdetect(im, model, model.thresh);
 	toc
 	% show the image
 	outName = fullfile(outDir, ['image', num2str(k), '.mat']);
-	save(outName, 'dets', 'boxes', 'score');
+	% save(outName, 'dets', 'boxes', 'pyra', 'score');
+    save(outName, 'pyra');
 end
