@@ -1,0 +1,5 @@
+proc_video('/home/weiliu89/playpen/part/data/sheep/sheep1', '/home/weiliu89/playpen/part/out/sheep/sheep1', 'VOC2009/sheep_final.mat', 5, 881)
+proc_video('/home/weiliu89/playpen/part/data/sheep/sheep2', '/home/weiliu89/playpen/part/out/sheep/sheep2', 'VOC2009/sheep_final.mat', 5)
+proc_video('/home/weiliu89/playpen/part/data/sheep/sheep3', '/home/weiliu89/playpen/part/out/sheep/sheep3', 'VOC2009/sheep_final.mat', 5)
+proc_video('/home/weiliu89/playpen/part/data/sheep/sheep4', '/home/weiliu89/playpen/part/out/sheep/sheep4', 'VOC2009/sheep_final.mat', 5)
+proc_video('/home/weiliu89/playpen/part/data/sheep/sheep5', '/home/weiliu89/playpen/part/out/sheep/sheep5', 'VOC2009/sheep_final.mat', 5)
