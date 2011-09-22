@@ -41,7 +41,7 @@ end
 if isdir(outDir)
     detectObj(videoDir, outDir, category, step, startFrame, endFrame);
 end
-return
+
 detAllName = fullfile(outDir, 'detAll.mat');
 
 % step 1: use mean shift to find the cluster

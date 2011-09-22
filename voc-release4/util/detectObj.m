@@ -46,7 +46,10 @@ load(category);
 for k = startFrame : step : endFrame
 	if k>endFrame
 		break;
-	end
+    end
+    if k ~= 176
+        continue;
+    end
 	inImageName = fullfile(videoDir, ['image', num2str(k), '.jpg']);
 	im = imread(inImageName);
 	% detect objects
@@ -54,8 +57,7 @@ for k = startFrame : step : endFrame
 	load(category);
 	[dets, boxes, info, pyra, score] = imgdetect(im, model, model.thresh);
 	toc
-	% show the image
+    % show the image
 	outName = fullfile(outDir, ['image', num2str(k), '.mat']);
-	% save(outName, 'dets', 'boxes', 'pyra', 'score');
-    save(outName, 'pyra');
+    save(outName, 'dets', 'boxes', 'pyra', 'score');
 end
